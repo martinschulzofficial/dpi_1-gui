@@ -25,6 +25,8 @@ public:
 private slots:
     void setIcon();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::Widget *ui;
     void createIconGroupBox();

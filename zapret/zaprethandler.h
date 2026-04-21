@@ -21,6 +21,7 @@ signals:
 
 private:
     bool status;
+    void checkStatus();
 };
 
 #endif // ZAPRETHANDLER_H
