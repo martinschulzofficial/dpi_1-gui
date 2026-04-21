@@ -3,20 +3,12 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 
-#include <QAction>
-#include <QCheckBox>
 #include <QComboBox>
-#include <QCoreApplication>
-#include <QCloseEvent>
 #include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QMenu>
 #include <QPushButton>
-#include <QSpinBox>
-#include <QTextEdit>
 #include <QVBoxLayout>
-#include <QMessageBox>
+
+#include "zapret/zaprethandler.h"
 
 const int kTrayIconOn = 1;
 const int kTrayIconOff = 0;
@@ -27,16 +19,20 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    zapretHandler = new ZapretHandler();
+
     createIconGroupBox();
     createTrayIcon();
 
-    // setIcon(kTrayIconOff);
-    setIcon(kTrayIconOn);
+    connect(iconComboBox, &QComboBox::currentIndexChanged,
+            this, &Widget::setIcon);
+    setIcon();
     trayIcon->show();
 }
 
-void Widget::setIcon(int index)
+void Widget::setIcon()
 {
+    const int index = zapretHandler->isActive() ? kTrayIconOn : kTrayIconOff;
     QIcon icon = iconComboBox->itemIcon(index);
     trayIcon->setIcon(icon);
     setWindowIcon(icon);
@@ -67,3 +63,9 @@ Widget::~Widget()
 {
     delete ui;
 }
+
+void Widget::on_pushButton_clicked()
+{
+
+}
+

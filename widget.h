@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSystemTrayIcon>
+#include "zapret/zaprethandler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +23,7 @@ public:
 
 
 private slots:
-    void setIcon(int index);
+    void setIcon();
 
 private:
     Ui::Widget *ui;
@@ -30,8 +31,9 @@ private:
     void createTrayIcon();
 
     QSystemTrayIcon *trayIcon;
-
     QComboBox *iconComboBox;
     QGroupBox *iconGroupBox;
+
+    ZapretHandler *zapretHandler;
 };
 #endif // WIDGET_H
