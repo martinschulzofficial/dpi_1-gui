@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>zzz-off.svg</file>
+        <file>zzz.svg</file>
+    </qresource>
+</RCC>
