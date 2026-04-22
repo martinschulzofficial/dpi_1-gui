@@ -31,11 +31,16 @@ private slots:
 
     void on_toggleButton_clicked();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     Ui::Widget *ui;
     void createIconGroupBox();
     void createTrayIcon();
     void setToggleButtonText();
+
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
     QSystemTrayIcon *trayIcon;
     QComboBox *iconComboBox;

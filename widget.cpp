@@ -27,6 +27,9 @@ Widget::Widget(QWidget *parent)
 
     trayIcon->show();
 
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::iconActivated);
+    // this->hide();
+
     domainsTextEdit = findChild<QPlainTextEdit*>("domainsTextEdit");
     domainsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getDomains()));
 
@@ -38,6 +41,22 @@ Widget::Widget(QWidget *parent)
     connect(zapretHandler, &ZapretHandler::statusChanged,
             this, &Widget::updateStatus);
     updateStatus();
+}
+
+void Widget::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        this->show();
+        break;
+    default:
+        ;
+    }
+}
+
+void Widget::closeEvent(QCloseEvent *event) {
+    event->ignore();
+    this->hide();
 }
 
 void Widget::updateStatus() {
