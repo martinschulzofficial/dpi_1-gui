@@ -25,10 +25,24 @@ Widget::Widget(QWidget *parent)
     createIconGroupBox();
     createTrayIcon();
 
-    connect(zapretHandler, &ZapretHandler::statusChanged,
-            this, &Widget::setIcon);
-    setIcon();
     trayIcon->show();
+
+    domainsTextEdit = findChild<QPlainTextEdit*>("domainsTextEdit");
+    domainsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getDomains()));
+
+    ipsTextEdit = findChild<QPlainTextEdit*>("ipsTextEdit");
+    ipsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getIps()));
+
+    toggleButton = findChild<QPushButton*>("toggleButton");
+
+    connect(zapretHandler, &ZapretHandler::statusChanged,
+            this, &Widget::updateStatus);
+    updateStatus();
+}
+
+void Widget::updateStatus() {
+    setIcon();
+    setToggleButtonText();
 }
 
 void Widget::setIcon()
@@ -40,6 +54,11 @@ void Widget::setIcon()
 
     std::cout << "Icon index" << index << std::endl;
     trayIcon->setToolTip(iconComboBox->itemText(index));
+}
+
+void Widget::setToggleButtonText() {
+    const auto text = zapretHandler->isActive() ? "Stop" : "Start";
+    toggleButton->setText(QString::fromStdString(text));
 }
 
 void Widget::createIconGroupBox()
@@ -66,8 +85,9 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::on_pushButton_clicked()
-{
 
+void Widget::on_toggleButton_clicked()
+{
+    zapretHandler->toggle();
 }
 

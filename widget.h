@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QSystemTrayIcon>
+#include <QPlainTextEdit>
+#include <QPushButton>
+
 #include "zapret/zaprethandler.h"
 
 QT_BEGIN_NAMESPACE
@@ -24,17 +27,22 @@ public:
 
 private slots:
     void setIcon();
+    void updateStatus();
 
-    void on_pushButton_clicked();
+    void on_toggleButton_clicked();
 
 private:
     Ui::Widget *ui;
     void createIconGroupBox();
     void createTrayIcon();
+    void setToggleButtonText();
 
     QSystemTrayIcon *trayIcon;
     QComboBox *iconComboBox;
     QGroupBox *iconGroupBox;
+    QPlainTextEdit *domainsTextEdit;
+    QPlainTextEdit *ipsTextEdit;
+    QPushButton *toggleButton;
 
     ZapretHandler *zapretHandler;
 };
