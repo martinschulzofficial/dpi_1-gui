@@ -1,7 +1,5 @@
 #include "zaprethandler.h"
 
-// #include <chrono>
-// #include <thread>
 #include <QTimer>
 #include <QProcess>
 #include <iostream>
@@ -26,14 +24,15 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-void exec_sudo(const char* cmd) {
-    QProcess::execute("osascript", QStringList() << "-e" << cmd);
+void exec_sudo(const std::string cmd) {
+    const std::string command = "do shell script \"" + cmd + "\" with administrator privileges";
+    QProcess::execute("osascript", QStringList() << "-e" << command.c_str());
 }
 
 
 ZapretHandler::ZapretHandler() {
     QTimer* timer = new QTimer();
-    timer->setInterval(1000);
+    timer->setInterval(5000);
     connect(timer, &QTimer::timeout, this, [=](){
         checkStatus();
     });
@@ -48,14 +47,14 @@ bool ZapretHandler::isActive() {
 }
 
 void ZapretHandler::start() {
-    exec_sudo("do shell script \"/opt/zapret/init.d/macos/zapret start\" with administrator privileges");
+    exec_sudo("/opt/zapret/init.d/macos/zapret start");
     status = true;
     std::cout << "Start called" << std::endl;
     emit statusChanged(status);
 }
 
 void ZapretHandler::stop() {
-    exec_sudo("do shell script \"/opt/zapret/init.d/macos/zapret stop\" with administrator privileges");
+    exec_sudo("/opt/zapret/init.d/macos/zapret stop");
     status = false;
     std::cout << "Stop called" << std::endl;
     emit statusChanged(status);
@@ -100,10 +99,7 @@ void ZapretHandler::checkStatus() {
 
     // std::cout << response << status << new_status << std::endl;
     if (status != new_status) {
-        if (new_status) {
-            start();
-        } else {
-            stop();
-        }
+        status = new_status;
+        emit statusChanged(status);
     }
 }
