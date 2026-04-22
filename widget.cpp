@@ -7,6 +7,7 @@
 #include <QGroupBox>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <iostream>
 
 #include "zapret/zaprethandler.h"
 
@@ -24,7 +25,7 @@ Widget::Widget(QWidget *parent)
     createIconGroupBox();
     createTrayIcon();
 
-    connect(iconComboBox, &QComboBox::currentIndexChanged,
+    connect(zapretHandler, &ZapretHandler::statusChanged,
             this, &Widget::setIcon);
     setIcon();
     trayIcon->show();
@@ -37,6 +38,7 @@ void Widget::setIcon()
     trayIcon->setIcon(icon);
     setWindowIcon(icon);
 
+    std::cout << "Icon index" << index << std::endl;
     trayIcon->setToolTip(iconComboBox->itemText(index));
 }
 
