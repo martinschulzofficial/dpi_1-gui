@@ -27,7 +27,7 @@ std::string exec(const char* cmd) {
 }
 
 void exec_sudo(const char* cmd) {
-    QProcess::startDetached("sudo", QStringList() << "-A" << cmd);
+    QProcess::execute("osascript", QStringList() << "-e" << cmd);
 }
 
 
@@ -48,16 +48,14 @@ bool ZapretHandler::isActive() {
 }
 
 void ZapretHandler::start() {
-    // runAppleScript("/opt/zapret/init.d/macos/zapret start");
-    exec_sudo("ls -la /");
+    exec_sudo("do shell script \"/opt/zapret/init.d/macos/zapret start\" with administrator privileges");
     status = true;
     std::cout << "Start called" << std::endl;
     emit statusChanged(status);
 }
 
 void ZapretHandler::stop() {
-    // runAppleScript("/opt/zapret/init.d/macos/zapret stop");
-    exec_sudo("ls -la /");
+    exec_sudo("do shell script \"/opt/zapret/init.d/macos/zapret stop\" with administrator privileges");
     status = false;
     std::cout << "Stop called" << std::endl;
     emit statusChanged(status);
