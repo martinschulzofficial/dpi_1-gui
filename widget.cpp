@@ -27,8 +27,6 @@ Widget::Widget(QWidget *parent)
 
     trayIcon->show();
 
-    connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::iconActivated);
-    // this->hide();
 
     domainsTextEdit = findChild<QPlainTextEdit*>("domainsTextEdit");
     domainsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getDomains()));
@@ -38,8 +36,8 @@ Widget::Widget(QWidget *parent)
 
     toggleButton = findChild<QPushButton*>("toggleButton");
 
-    connect(zapretHandler, &ZapretHandler::statusChanged,
-            this, &Widget::updateStatus);
+    connect(zapretHandler, &ZapretHandler::statusChanged, this, &Widget::updateStatus);
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::iconActivated);
     updateStatus();
 }
 
