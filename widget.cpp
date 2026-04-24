@@ -1,6 +1,8 @@
 #include "widget.h"
 #include "./ui_widget.h"
 
+#include <ApplicationServices/ApplicationServices.h>
+
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QCheckBox>
@@ -28,6 +30,9 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
+
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&psn, kProcessTransformToUIElementApplication);
     ui->setupUi(this);
 
     zapretHandler = new ZapretHandler();
@@ -48,21 +53,8 @@ Widget::Widget(QWidget *parent)
     toggleButton = findChild<QPushButton*>("toggleButton");
 
     connect(zapretHandler, &ZapretHandler::statusChanged, this, &Widget::updateStatus);
-    connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::iconActivated);
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::onTrayIconActivated);
     updateStatus();
-
-
-}
-
-void Widget::iconActivated(QSystemTrayIcon::ActivationReason reason)
-{
-    switch (reason) {
-    case QSystemTrayIcon::Trigger:
-        this->show();
-        break;
-    default:
-        ;
-    }
 }
 
 void Widget::closeEvent(QCloseEvent *event) {
@@ -107,18 +99,33 @@ void Widget::createIconGroupBox()
 
 void Widget::createActions()
 {
-    quitAction = new QAction("Quit", this);
+    quitAction = new QAction(tr("Quit"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+    showWindowAction = new QAction(tr("Show window"), this);
+    connect(showWindowAction, &QAction::triggered, this, &Widget::showWindow);
+}
+
+void Widget::showWindow() {
+    this->show();
+}
+
+void Widget::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
+    if (reason == QSystemTrayIcon::Context) {
+        // Position the menu at the current cursor location and show it
+        trayIconMenu->popup(QCursor::pos());
+    } else if (reason == QSystemTrayIcon::Trigger) {
+        zapretHandler->toggle();
+    }
 }
 
 void Widget::createTrayIcon()
 {
-
     trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(showWindowAction);
     trayIconMenu->addAction(quitAction);
-
     trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setContextMenu(trayIconMenu);
+    // trayIcon->setContextMenu(trayIconMenu);
 }
 
 Widget::~Widget()

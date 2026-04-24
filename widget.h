@@ -48,9 +48,10 @@ private:
     void createTrayIcon();
     void setToggleButtonText();
 
+    void showWindow();
     void createActions();
 
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void onTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
     QSystemTrayIcon *trayIcon;
     QComboBox *iconComboBox;
@@ -61,6 +62,7 @@ private:
     QMenu *trayIconMenu;
 
     QAction *quitAction;
+    QAction *showWindowAction;
 
     ZapretHandler *zapretHandler;
 };
