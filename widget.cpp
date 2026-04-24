@@ -2,7 +2,6 @@
 #include "./ui_widget.h"
 
 #include <ApplicationServices/ApplicationServices.h>
-
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QCheckBox>
@@ -130,7 +129,7 @@ void Widget::createTrayIcon()
 {
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(showWindowAction);
-    trayIconMenu->addAction(forceKillAction);
+    // trayIconMenu->addAction(forceKillAction);
     trayIconMenu->addAction(quitAction);
     trayIcon = new QSystemTrayIcon(this);
     // trayIcon->setContextMenu(trayIconMenu);

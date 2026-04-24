@@ -53,7 +53,8 @@ void ZapretHandler::start() {
 }
 
 void ZapretHandler::stop() {
-    exec_sudo("/opt/zapret/init.d/macos/zapret stop");
+    // exec_sudo("/opt/zapret/init.d/macos/zapret stop");
+    forceKill();
     status = false;
     std::cout << "Stop called" << std::endl;
     emit statusChanged(status);
@@ -73,7 +74,7 @@ std::string ZapretHandler::getDomains() {
     std::stringstream buffer;
     buffer << t.rdbuf();
 
-    std::cout << "domains" << buffer.str() << std::endl;
+    // std::cout << "domains" << buffer.str() << std::endl;
     return buffer.str();
 }
 
@@ -83,7 +84,7 @@ std::string ZapretHandler::getIps(){
     std::stringstream buffer;
     buffer << t.rdbuf();
 
-    std::cout << "ips" << buffer.str() << std::endl;
+    // std::cout << "ips" << buffer.str() << std::endl;
     return buffer.str();
 }
 
