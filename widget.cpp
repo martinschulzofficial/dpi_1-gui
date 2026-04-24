@@ -97,13 +97,20 @@ void Widget::createIconGroupBox()
     iconGroupBox->setLayout(iconLayout);
 }
 
+void Widget::onForceKill() {
+    zapretHandler->forceKill();
+}
+
 void Widget::createActions()
 {
-    quitAction = new QAction(tr("Quit"), this);
-    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+    forceKillAction = new QAction(tr("Force Kill"), this);
+    connect(forceKillAction, &QAction::triggered, this, &Widget::onForceKill);
 
     showWindowAction = new QAction(tr("Show window"), this);
     connect(showWindowAction, &QAction::triggered, this, &Widget::showWindow);
+
+    quitAction = new QAction(tr("Quit"), this);
+    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 }
 
 void Widget::showWindow() {
@@ -123,6 +130,7 @@ void Widget::createTrayIcon()
 {
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(showWindowAction);
+    trayIconMenu->addAction(forceKillAction);
     trayIconMenu->addAction(quitAction);
     trayIcon = new QSystemTrayIcon(this);
     // trayIcon->setContextMenu(trayIconMenu);

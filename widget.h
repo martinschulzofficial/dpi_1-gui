@@ -52,6 +52,7 @@ private:
     void createActions();
 
     void onTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void onForceKill();
 
     QSystemTrayIcon *trayIcon;
     QComboBox *iconComboBox;
@@ -63,6 +64,7 @@ private:
 
     QAction *quitAction;
     QAction *showWindowAction;
+    QAction *forceKillAction;
 
     ZapretHandler *zapretHandler;
 };

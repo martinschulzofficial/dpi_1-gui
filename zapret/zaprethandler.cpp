@@ -29,7 +29,6 @@ void exec_sudo(const std::string cmd) {
     QProcess::execute("osascript", QStringList() << "-e" << command.c_str());
 }
 
-
 ZapretHandler::ZapretHandler() {
     QTimer* timer = new QTimer();
     timer->setInterval(5000);
@@ -68,7 +67,6 @@ void ZapretHandler::toggle() {
     }
 }
 
-
 std::string ZapretHandler::getDomains() {
     const auto kUserDomainsFilePath = kIpsetDir + "/zapret-hosts-user.txt";
     std::ifstream t(kUserDomainsFilePath);
@@ -103,3 +101,16 @@ void ZapretHandler::checkStatus() {
         emit statusChanged(status);
     }
 }
+
+void ZapretHandler::forceKill() {
+    exec_sudo("for pid in $(ps -ef | grep zapret | awk '{print $2}'); do sudo kill -9 $pid; done");
+    status = false;
+    std::cout << "Stop called" << std::endl;
+    emit statusChanged(status);
+}
+
+
+
+
+
+

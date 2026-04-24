@@ -13,10 +13,12 @@ public:
     bool isActive();
     void start();
     void stop();
+    void forceKill();
     std::string getDomains();
     std::string getIps();
     void updateDomains(std::string newDomains);
     void toggle();
+
 
 signals:
     void statusChanged(bool newValue);
