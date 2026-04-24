@@ -1,12 +1,22 @@
 #include "widget.h"
 #include "./ui_widget.h"
-#include <QSystemTrayIcon>
-#include <QMenu>
 
+#include <QSystemTrayIcon>
+#include <QAction>
+#include <QCheckBox>
 #include <QComboBox>
+#include <QCoreApplication>
+#include <QCloseEvent>
 #include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenu>
 #include <QPushButton>
+#include <QSpinBox>
+#include <QTextEdit>
 #include <QVBoxLayout>
+#include <QMessageBox>
+
 #include <iostream>
 
 #include "zapret/zaprethandler.h"
@@ -23,6 +33,7 @@ Widget::Widget(QWidget *parent)
     zapretHandler = new ZapretHandler();
 
     createIconGroupBox();
+    createActions();
     createTrayIcon();
 
     trayIcon->show();
@@ -39,6 +50,8 @@ Widget::Widget(QWidget *parent)
     connect(zapretHandler, &ZapretHandler::statusChanged, this, &Widget::updateStatus);
     connect(trayIcon, &QSystemTrayIcon::activated, this, &Widget::iconActivated);
     updateStatus();
+
+
 }
 
 void Widget::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -92,9 +105,20 @@ void Widget::createIconGroupBox()
     iconGroupBox->setLayout(iconLayout);
 }
 
+void Widget::createActions()
+{
+    quitAction = new QAction("Quit", this);
+    connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+}
+
 void Widget::createTrayIcon()
 {
+
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(quitAction);
+
     trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
 }
 
 Widget::~Widget()
