@@ -118,7 +118,6 @@ void Widget::showWindow() {
 
 void Widget::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
     if (reason == QSystemTrayIcon::Context) {
-        // Position the menu at the current cursor location and show it
         trayIconMenu->popup(QCursor::pos());
     } else if (reason == QSystemTrayIcon::Trigger) {
         zapretHandler->toggle();
@@ -129,10 +128,8 @@ void Widget::createTrayIcon()
 {
     trayIconMenu = new QMenu(this);
     trayIconMenu->addAction(showWindowAction);
-    // trayIconMenu->addAction(forceKillAction);
     trayIconMenu->addAction(quitAction);
     trayIcon = new QSystemTrayIcon(this);
-    // trayIcon->setContextMenu(trayIconMenu);
 }
 
 Widget::~Widget()
