@@ -39,6 +39,8 @@ private slots:
 
     void on_toggleButton_clicked();
 
+    void on_updateDomainsButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

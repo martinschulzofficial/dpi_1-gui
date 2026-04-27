@@ -143,3 +143,13 @@ void Widget::on_toggleButton_clicked()
     zapretHandler->toggle();
 }
 
+
+void Widget::on_updateDomainsButton_clicked()
+{
+    std::string newValue = domainsTextEdit->toPlainText().toStdString();
+    zapretHandler->updateDomains(newValue);
+
+    domainsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getDomains()));
+    ipsTextEdit->setPlainText(QString::fromStdString(zapretHandler->getIps()));
+}
+

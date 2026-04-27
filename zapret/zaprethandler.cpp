@@ -10,6 +10,7 @@
 #include <sstream>
 
 const std::string kIpsetDir = "/opt/zapret/ipset";
+const auto kUserDomainsFilePath = kIpsetDir + "/zapret-hosts-user.txt";
 
 std::string exec(const char* cmd) {
     std::array<char, 128> buffer;
@@ -69,7 +70,6 @@ void ZapretHandler::toggle() {
 }
 
 std::string ZapretHandler::getDomains() {
-    const auto kUserDomainsFilePath = kIpsetDir + "/zapret-hosts-user.txt";
     std::ifstream t(kUserDomainsFilePath);
     std::stringstream buffer;
     buffer << t.rdbuf();
@@ -89,7 +89,7 @@ std::string ZapretHandler::getIps(){
 }
 
 void ZapretHandler::updateDomains(std::string newDomains) {
-
+    exec_sudo("echo '" + newDomains + "' >" + kUserDomainsFilePath + " && /opt/zapret/ipset/get_user.sh");
 }
 
 void ZapretHandler::checkStatus() {
