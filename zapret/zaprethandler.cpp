@@ -49,7 +49,7 @@ bool ZapretHandler::isActive() {
 void ZapretHandler::start() {
     exec_sudo("/opt/zapret/init.d/macos/zapret start");
     status = true;
-    std::cout << "Start called" << std::endl;
+    // std::cout << "Start called" << std::endl;
     emit statusChanged(status);
 }
 
@@ -57,7 +57,7 @@ void ZapretHandler::stop() {
     // exec_sudo("/opt/zapret/init.d/macos/zapret stop");
     forceKill();
     status = false;
-    std::cout << "Stop called" << std::endl;
+    // std::cout << "Stop called" << std::endl;
     emit statusChanged(status);
 }
 
